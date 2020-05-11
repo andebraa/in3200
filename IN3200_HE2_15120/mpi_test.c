@@ -2,6 +2,8 @@
 #include <string.h>
 #include <mip.h>
 
+//NOTE THIS PROGRAM IS SIMPLY TO TEST THAT MPI IS DOWNLOADED AND WORKING ON A GIVEN COMPUTER
+
 const int MAX_STRING = 100;
 
 
