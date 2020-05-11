@@ -64,12 +64,11 @@ int MPI_count_friends_of_ten(int M, int N, int** v){
       }
     }//end i loop rows[1\\\\\\    MPI_Allreduce(&friends_local, &friends, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
 
-
-    for(int i = 0; i <N; i++){ //free the slaves
-      free(v[i]);
-    }
-    free(v);
     free(rows);
+
+    //return or share the number of friends of ten
+    MPI_Allreduce(&friends_local, &friends, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+
   }else if(my_rank == (comm_sz-1)){ //last block does can not include ghost points
 
   int friends_local=0;

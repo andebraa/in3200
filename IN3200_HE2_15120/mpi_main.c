@@ -14,8 +14,8 @@ int main (int argc, char **argv){
   MPI_Init (&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank==0) {
-    M = 5;
-    N = 5;
+    M = 9;
+    N = 9;
     v = (int**)calloc(M, sizeof(int*)); //making 2D array
     for(int i = 0; i < M; i++){
       (v)[i] = (int*)calloc(N, sizeof(int));
@@ -37,14 +37,14 @@ int main (int argc, char **argv){
 
   printf("MPI rank <%d>: number of triple friends=%d\n", rank, num_triple_friends);
 
-/*
+
   if (rank==0){
     for(int i = 0; i < M; i++){
       free(v[i]);
     }
   free(v);
   }
-  */
+
   MPI_Finalize ();
   return 0;
 }
