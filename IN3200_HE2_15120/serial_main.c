@@ -18,14 +18,9 @@ int main(){
     }
   }
   int num_friends = count_friends_of_ten(M, N, v);
-  for(int i = 0; i < N; i++){
-    for(int j = 0; j < M; j++){
-      printf("%d ", v[i][j]);
-    }
-    printf("\n" );
-  }
 
-  printf("%d\n", num_friends);
+
+  printf("number of friends of ten: %d\n", num_friends);
 
   for(int i = 0; i < M; i++){
     free(v[i]);

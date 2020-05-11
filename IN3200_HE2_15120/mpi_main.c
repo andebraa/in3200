@@ -26,13 +26,6 @@ int main (int argc, char **argv){
 
   } //end rank = 0
 
-  for(int i = 0; i < M; i++){
-    for(int j = 0; j < N; j++){
-    printf(" %d ", v[i][j]);
-    }
-    printf("\n");
-  }
-  printf("^^ the original matrix \n");
   num_triple_friends =MPI_count_friends_of_ten (M, N, v);
 
   printf("MPI rank <%d>: number of triple friends=%d\n", rank, num_triple_friends);

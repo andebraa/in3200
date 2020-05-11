@@ -11,11 +11,10 @@ int MPI_count_friends_of_ten(int M, int N, int** v){
   int my_rank;
   MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-  printf("comm %d\n", comm_sz);
-
   int * rows = (int*)calloc(comm_sz+1, sizeof(int));
 
   if(my_rank==0){
+
     int friends_local = 0;
     for(int i = 0; i < (comm_sz); i++){
       rows[i +1] = rows[i] + ((M/comm_sz)-1); //stores cumulative number of rows
@@ -38,7 +37,7 @@ int MPI_count_friends_of_ten(int M, int N, int** v){
     }
     //the last thread is given the bottom rows, hence it can not be given
     //and ghost rows! comm_sz -1 is the last thread, who's index is comm_sz
-    for(int r = rows[comm_sz-1]; r < rows[comm_sz]; r ++){
+    for(int r = rows[comm_sz-1]+1; r <= rows[comm_sz]; r ++){
       MPI_Send(v[r], N, MPI_INT, comm_sz-1, comm_sz-1, MPI_COMM_WORLD);
     }
 
@@ -81,23 +80,10 @@ int MPI_count_friends_of_ten(int M, int N, int** v){
   for(int i = 0; i < rows[comm_sz]-rows[comm_sz-1]; i++){
     (v_f)[i] = (int*)calloc(N, sizeof(int));
   }
-  printf(" in last thread N: %d\n", N);
-
-  for(int i =0; i <= comm_sz; i ++){
-    printf("%d ", rows[i]);
-  }
-  printf("rows\n");
 
   for(int r = 0; r < rows[comm_sz] -rows[comm_sz-1]; r++){
     MPI_Recv(v_f[r], N, MPI_INT, 0, comm_sz-1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
   }
-  for(int i = 0; i < rows[comm_sz] -rows[comm_sz-1]; i++){
-    for(int j = 0; j < N; j++){
-    printf(" %d ", v_f[i][j]);
-    }
-    printf("\n");
-  }
-
 
   //calculating last thread friends from rows[comm_sz-1]+1 to rows[comm_sz]-2
   for(int i = 0; i < rows[comm_sz] -rows[comm_sz-1]-2; i++){ //last thread bottoms out at rows[comm_sz]-2
@@ -151,7 +137,6 @@ int MPI_count_friends_of_ten(int M, int N, int** v){
     for(int i = 1; i < comm_sz-1; i ++){//loop over threads except last thread
       for(int r = 0; r < (rows[my_rank+1] -rows[my_rank]) +2; r ++){//loops over number of rows for each thread
         //in order to calculate vertical friends it needs two ghost rows
-        printf("row:%d\n", r);
         MPI_Recv(v_m[r], N, MPI_INT, i, my_rank, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         // data, count, data type, destination, tag, communicator
         // i is the thread which data is sent to
