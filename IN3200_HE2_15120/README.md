@@ -12,7 +12,7 @@ MAKEFILE USAGE IN TERMINAL:
 - - - -makes 'halvard.exe' which must be run by './halvard'
 
 :$ make mpi
-- - - -makes 'halvard_mpi.exe' which must be run by 'mpiexec -n <number of threads> ./halvard_mpi'
+- - - -makes 'halvard_mpi.exe' which must be run by 'mpiexec -n number_of_threads ./halvard_mpi'
 
 :$ make clean:
 - - - -removes halvard and halvard_mpi
